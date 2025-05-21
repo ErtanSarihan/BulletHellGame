@@ -1,0 +1,21 @@
+using System;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+namespace Input {
+  public class InputManager : MonoBehaviour {
+    public static Vector2 Movement;
+
+    private PlayerInput _playerInput;
+    private InputAction _moveAction;
+
+    private void Awake() {
+      _playerInput = GetComponent<PlayerInput>();
+      _moveAction = _playerInput.actions["Move"];
+    }
+
+    private void Update() {
+      Movement = _moveAction.ReadValue<Vector2>();
+    }
+  }
+}
