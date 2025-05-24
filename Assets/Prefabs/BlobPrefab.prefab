@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 7796248308705745931}
   - component: {fileID: 1120334249981075163}
   - component: {fileID: 7328523486997440753}
+  - component: {fileID: 843872772475953741}
   m_Layer: 6
-  m_Name: EnemyPrefab
+  m_Name: BlobPrefab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,4 +166,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20700a6690834221bcf59f300e7fb244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 2
+  health: 10
+  moveSpeed: 1
+--- !u!95 &843872772475953741
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7695414700011274976}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dd434867a142b40619a2bb85a100bda0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

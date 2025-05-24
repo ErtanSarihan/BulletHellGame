@@ -3,8 +3,7 @@ using UnityEngine;
 namespace Enemies {
   public class Enemy : MonoBehaviour {
     [SerializeField]
-    private float _health = 10f;
-    [SerializeField]
+    private float health = 10f;
     private float _maxHealth = 10f;
     [SerializeField]
     private float moveSpeed = 1f;
@@ -19,8 +18,8 @@ namespace Enemies {
         _player = playerObject.transform;
       }
 
-      _maxHealth = _health;
-      Debug.Log($"[ENEMY SPAWN] {gameObject.name} spawned with {_health} health");
+      _maxHealth = health;
+      Debug.Log($"[ENEMY SPAWN] {gameObject.name} spawned with {health} health");
     }
 
     private void Update() {
@@ -31,9 +30,9 @@ namespace Enemies {
     }
 
     public void TakeDamage(float damage) {
-      _health -= damage;
-      Debug.Log($"[ENEMY DAMAGE] {gameObject.name} took {damage} damage! Health: {_health}/{_maxHealth}");
-      if (_health <= 0) {
+      health -= damage;
+      Debug.Log($"[ENEMY DAMAGE] {gameObject.name} took {damage} damage! Health: {health}/{_maxHealth}");
+      if (health <= 0) {
         Debug.Log($"[ENEMY DEATH] {gameObject.name} has been destroyed!");
         Destroy(gameObject);
       }
