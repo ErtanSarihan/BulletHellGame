@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
@@ -10,6 +9,9 @@ public class Bullet : MonoBehaviour {
 
   [SerializeField]
   private float lifeTime = 3f;
+  
+  [SerializeField]
+  private float rotationOffset = -90f;
 
   private Rigidbody2D _rigidbody;
 
@@ -29,7 +31,7 @@ public class Bullet : MonoBehaviour {
     _rigidbody.linearVelocity = direction.normalized * speed;
     
     // rotate bullet to face the direction
-    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + rotationOffset;
     transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
   }
 
