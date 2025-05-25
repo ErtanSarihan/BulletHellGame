@@ -26,7 +26,7 @@ namespace Enemies {
     }
 
     void SpawnEnemy() {
-      Debug.Log(enemyPrefab + "/" + spawnPoints.Length);
+      // Debug.Log(enemyPrefab + "/" + spawnPoints.Length);
       if (enemyPrefab is null || spawnPoints.Length == 0) {
         Debug.LogError("Missing enemy prefab or spawn points!");
         return;
