@@ -1,4 +1,5 @@
 using System.Collections;
+using Player;
 using UnityEngine;
 
 namespace Enemies {
@@ -9,7 +10,7 @@ namespace Enemies {
     [SerializeField]
     protected float moveSpeed = 10f;
     [SerializeField]
-    protected int experienceValue = 10;
+    protected float experienceGiven = 10f;
 
     [Header("Visual Effects")]
     [SerializeField]
@@ -91,7 +92,18 @@ namespace Enemies {
       StartCoroutine(DeathAnimation());
     }
 
-    protected virtual void OnDeath() { }
+    protected virtual void OnDeath() {
+      
+      GameObject player = GameObject.FindGameObjectWithTag("Player");
+      if (!player) return;
+      
+      PlayerStats playerStats = player.GetComponent<PlayerStats>();
+      if (!playerStats) return;
+      
+      playerStats.AddXp(experienceGiven);
+      
+      Debug.Log("Player gained XP: " + experienceGiven);
+    }
 
     protected virtual void DisableEnemy() {
       rb.linearVelocity = Vector2.zero;
@@ -131,7 +143,7 @@ namespace Enemies {
         if (!isDying) spriteRenderer.color = originalColor;
       }
     }
-    
+
     protected virtual void OnDestroy() {
       if (_flashCoroutine != null) StopCoroutine(_flashCoroutine);
     }
