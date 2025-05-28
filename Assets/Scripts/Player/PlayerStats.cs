@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Player {
   public class PlayerStats : MonoBehaviour {
@@ -14,7 +15,7 @@ namespace Player {
     private float xpMultiplier = 1.5f;
 
     public UnityEvent<int> onLevelUp = new UnityEvent<int>();
-    public UnityEvent<float> onExperienceGain = new UnityEvent<float>();
+    public UnityEvent<float> onExperienceChange = new UnityEvent<float>();
 
     public int CurrentLevel => currentLevel;
     public float CurrentXp => currentXp;
@@ -22,7 +23,7 @@ namespace Player {
 
     public void AddXp(float amount) {
       currentXp += amount;
-      onExperienceGain?.Invoke(currentXp);
+      onExperienceChange?.Invoke(currentXp);
 
       // Check for level up
       while (currentXp >= xpToNextLevel) {
@@ -36,7 +37,7 @@ namespace Player {
       xpToNextLevel *= xpMultiplier;
 
       onLevelUp?.Invoke(currentLevel);
-      onExperienceGain?.Invoke(currentXp);
+      onExperienceChange?.Invoke(currentXp);
 
       Debug.Log("LevelUp" + currentLevel + "-----" + currentXp + "/" + xpToNextLevel);
     }

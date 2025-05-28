@@ -101,6 +101,10 @@ namespace Enemies {
       if (!playerStats) return;
       
       playerStats.AddXp(experienceGiven);
+      XPUIManager xpUI = FindFirstObjectByType<XPUIManager>();
+      if (xpUI) {
+        xpUI.ShowFloatingXpText(transform.position, experienceGiven);
+      }
       
       Debug.Log("Player gained XP: " + experienceGiven);
     }
