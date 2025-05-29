@@ -9,6 +9,8 @@ public class XPUIManager : MonoBehaviour {
   private Slider xpBar;
   [SerializeField]
   private TextMeshProUGUI levelText;
+  [SerializeField]
+  private TextMeshProUGUI xpProgressText;
 
 
   [Header("Floating XP Text")]
@@ -32,13 +34,11 @@ public class XPUIManager : MonoBehaviour {
     if (!floatingXpTextPrefab) return;
     var tempText = floatingXpTextPrefab.GetComponent<TextMeshProUGUI>();
 
-    if (tempText && !tempText.font) {
-      tempText.font = TMP_Settings.defaultFontAsset;
-    }
+    if (tempText && !tempText.font) tempText.font = TMP_Settings.defaultFontAsset;
 
-    if (levelText && !levelText.font) {
-      levelText.font = TMP_Settings.defaultFontAsset;
-    }
+    if (levelText && !levelText.font) levelText.font = TMP_Settings.defaultFontAsset;
+    
+    if (xpProgressText && !xpProgressText.font) xpProgressText.font = TMP_Settings.defaultFontAsset;
   }
 
   private void Start() {
@@ -52,14 +52,13 @@ public class XPUIManager : MonoBehaviour {
   }
 
   private void UpdateXpBar(float currentXp) {
-    if (xpBar) {
-      xpBar.value = currentXp / _playerStats.XpToNextLevel;
-    }
+    if (xpBar) xpBar.value = currentXp / _playerStats.XpToNextLevel;
+    if (xpProgressText) xpProgressText.text =  $"{Mathf.Floor(currentXp)} / {Mathf.Floor(_playerStats.XpToNextLevel)}";
   }
 
   private void UpdateLevelText(int level) {
     if (levelText) {
-      levelText.text = $"Level {level}";
+      levelText.text = $"{level}";
     }
   }
 
@@ -68,10 +67,10 @@ public class XPUIManager : MonoBehaviour {
       if (!Camera.main) return;
       Vector2 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
       GameObject floatingText = Instantiate(floatingXpTextPrefab, _mainCanvas.transform);
-      
+
       RectTransform rectTransform = floatingText.GetComponent<RectTransform>();
       rectTransform.position = screenPosition;
-      
+
       TextMeshProUGUI textComponent = floatingText.GetComponent<TextMeshProUGUI>();
       if (textComponent && textComponent.font) {
         textComponent.text = $"+{xpAmount} XP";
@@ -92,11 +91,11 @@ public class XPUIManager : MonoBehaviour {
 
       // Move upward in screen space
       rectTransform.position = startPosition + Vector2.up * (floatingTextMoveSpeed * elapsedTime * 100f);
-            
+
       // Fade out
       float alpha = 1f - (elapsedTime / floatingTextDuration);
       text.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-            
+
       yield return null;
     }
 
