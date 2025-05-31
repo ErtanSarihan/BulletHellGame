@@ -25,17 +25,24 @@ namespace Enemies {
         return;
       }
 
-      // Calculate direction to player
-      Vector2 direction = (playerTransform.position - transform.position).normalized;
-      
-      // Move towards player
-      rb.linearVelocity = direction * moveSpeed;
-      
-      // Update animator parameters with actual direction values
-      animator.SetFloat(HorizontalParam, direction.x);
-      animator.SetFloat(VerticalParam, direction.y);
-      
-      SetAnimatorMove(true);
+      // Only move if not in attack range OR if attack is on cooldown and player is out of range
+      if (!isInAttackRange || (!canAttack && !isInAttackRange)) {
+        // Calculate direction to player
+        Vector2 direction = (playerTransform.position - transform.position).normalized;
+        
+        // Move towards player
+        rb.linearVelocity = direction * moveSpeed;
+        
+        // Update animator parameters with actual direction values
+        animator.SetFloat(HorizontalParam, direction.x);
+        animator.SetFloat(VerticalParam, direction.y);
+        
+        SetAnimatorMove(true);
+      } else {
+        // Stop moving if in attack range and can attack, or if attack is on cooldown but still in range
+        rb.linearVelocity = Vector2.zero;
+        SetAnimatorMove(false);
+      }
     }
 
     protected override void StartAttack() {

@@ -23,6 +23,7 @@ namespace Enemies {
     protected float attackDuration = 0.5f;
     protected bool canAttack = true;
     protected bool isAttacking = false;
+    protected bool isInAttackRange = false;
 
     [Header("Visual Effects")]
     [SerializeField]
@@ -51,18 +52,34 @@ namespace Enemies {
       InitializeComponents();
       FindPlayer();
       SetupEnemy();
+      SetupPhysics();
+    }
+
+    protected virtual void SetupPhysics() {
+      if (rb) {
+        rb.gravityScale = 0f;
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0f;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+        rb.mass = 1f;
+      }
     }
 
     protected virtual void Update() {
       if (isDying) return;
-      HandleMovement();
 
-      if (canAttack && playerTransform && !isAttacking) {
+      if (playerTransform) {
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
-        if (distanceToPlayer <= attackRange) {
+        isInAttackRange = distanceToPlayer <= attackRange;
+
+        if (canAttack && !isAttacking && isInAttackRange) {
           StartAttack();
         }
       }
+
+      HandleMovement();
     }
 
     protected abstract void HandleMovement();
@@ -110,6 +127,7 @@ namespace Enemies {
       var distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
       if (distanceToPlayer <= attackRange) {
         playerStats.TakeDamage(attackDamage);
+        Debug.Log($"{gameObject.name} dealt {attackDamage} damage to player");
       }
     }
 
@@ -118,7 +136,10 @@ namespace Enemies {
       isAttacking = true;
       canAttack = false;
       
-      if (rb) rb.linearVelocity = Vector2.zero;
+      if (rb) {
+        rb.linearVelocity = Vector2.zero;
+        rb.bodyType = RigidbodyType2D.Kinematic; // Make the enemy immovable during attack
+      }
       
       if (_attackDurationCoroutine != null) StopCoroutine(_attackDurationCoroutine);
       _attackDurationCoroutine = StartCoroutine(AttackDurationRoutine());
@@ -128,6 +149,7 @@ namespace Enemies {
       yield return new WaitForSeconds(attackDuration);
       DealDamage();
       isAttacking = false;
+      if (rb) rb.isKinematic = false; // Re-enable physics after attack
       StartAttackCooldown();
     }
     
@@ -166,7 +188,10 @@ namespace Enemies {
     }
 
     protected virtual void DisableEnemy() {
-      if (rb) rb.linearVelocity = Vector2.zero;
+      if (rb) {
+        rb.linearVelocity = Vector2.zero;
+        rb.isKinematic = true;
+      }
       if (col) col.enabled = false;
     }
 
