@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6950038668147225144}
   - component: {fileID: 3462789463355421320}
   - component: {fileID: 7796248308705745931}
-  - component: {fileID: 1120334249981075163}
   - component: {fileID: 843872772475953741}
-  - component: {fileID: 7007489701390648531}
+  - component: {fileID: 4748192216551787486}
+  - component: {fileID: 7297527184110573119}
   m_Layer: 6
-  m_Name: BlobPrefab
+  m_Name: BeePrefab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.1450377, y: -1.0145001, z: -0.021457277}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: -640447433
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1108125097678183789, guid: 292e5a1e69d10436eab3fb6bf5f58937, type: 3}
+  m_Sprite: {fileID: 274096954, guid: 040325a5ab5595345b918eb5499b86ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -118,8 +118,55 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &1120334249981075163
-CircleCollider2D:
+--- !u!95 &843872772475953741
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7695414700011274976}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c4aaabd3f562cda4c83a7ce32388c2d2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4748192216551787486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7695414700011274976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edef11f1bc7a4c378dd77c738ee17fe8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 5
+  moveSpeed: 2
+  experienceGiven: 15
+  attackRange: 1.5
+  attackDamage: 1
+  attackCooldown: 1
+  attackDuration: 0.5
+  flashDurationOnDamageTaken: 0.2
+  damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  fadeDurationOnDeath: 0.3
+  animator: {fileID: 843872772475953741}
+  rotationSpeed: 5
+  smoothRotation: 1
+--- !u!70 &7297527184110573119
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -152,45 +199,6 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0033567846, y: 0}
-  m_Radius: 0.49200693
---- !u!95 &843872772475953741
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7695414700011274976}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dd434867a142b40619a2bb85a100bda0, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7007489701390648531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7695414700011274976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1163598319e4ee6a238fe0dfc87fac6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthPoints: 10
-  moveSpeed: 1
-  experienceValue: 10
-  flashDurationOnDamageTaken: 0.2
-  damagedColor: {r: 1, g: 0, b: 0, a: 1}
-  fadeDurationOnDeath: 0.3
+  m_Offset: {x: -0.0021665574, y: 0.024172785}
+  m_Size: {x: 0.08346472, y: 0.12950002}
+  m_Direction: 0

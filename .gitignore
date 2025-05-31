@@ -12,6 +12,7 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -69,6 +70,9 @@ crashlytics-build.properties
 
 # Packed Addressables
 /[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
+
+/Assets/100 Top Down Monsters - Pixel Art - Vol 1.meta
+/Assets/100 Top Down Monsters - Pixel Art - Vol 1/
 
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta

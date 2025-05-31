@@ -11,10 +11,10 @@ namespace Player {
     private Rigidbody2D _rb;
     private Animator _animator;
     
-    private const string _horizontal = "Horizontal";
-    private const string _vertical = "Vertical";
-    private const string _lastHorizontal = "LastHorizontal";
-    private const string _lastVertical = "LastVertical";
+    private const string Horizontal = "Horizontal";
+    private const string Vertical = "Vertical";
+    private const string LastHorizontal = "LastHorizontal";
+    private const string LastVertical = "LastVertical";
     
     private void Awake() {
       _rb = GetComponent<Rigidbody2D>();
@@ -26,12 +26,12 @@ namespace Player {
       
       _rb.linearVelocity = _movement * moveSpeed;
       
-      _animator.SetFloat(_horizontal, _movement.x);
-      _animator.SetFloat(_vertical, _movement.y);
+      _animator.SetFloat(Horizontal, _movement.x);
+      _animator.SetFloat(Vertical, _movement.y);
 
       if (_movement != Vector2.zero) {
-        _animator.SetFloat(_lastHorizontal, _movement.x);
-        _animator.SetFloat(_lastVertical, _movement.y);
+        _animator.SetFloat(LastHorizontal, _movement.x);
+        _animator.SetFloat(LastVertical, _movement.y);
       }
       
     }

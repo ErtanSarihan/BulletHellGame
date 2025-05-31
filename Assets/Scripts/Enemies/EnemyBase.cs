@@ -12,6 +12,18 @@ namespace Enemies {
     [SerializeField]
     protected float experienceGiven = 10f;
 
+    [Header("Attack Settings")]
+    [SerializeField]
+    protected float attackRange = 1.5f;
+    [SerializeField]
+    protected float attackDamage = 1f;
+    [SerializeField]
+    protected float attackCooldown = 1f;
+    [SerializeField]
+    protected float attackDuration = 0.5f;
+    protected bool canAttack = true;
+    protected bool isAttacking = false;
+
     [Header("Visual Effects")]
     [SerializeField]
     protected float flashDurationOnDamageTaken = 0.2f;
@@ -22,6 +34,7 @@ namespace Enemies {
 
     // <--------COMPONENTS---------->
     protected Transform playerTransform;
+    protected PlayerStats playerStats;
     protected Rigidbody2D rb;
     protected SpriteRenderer spriteRenderer;
     protected Collider2D col;
@@ -31,6 +44,8 @@ namespace Enemies {
     protected Color originalColor;
     protected bool isDying;
     private Coroutine _flashCoroutine;
+    private Coroutine _attackCooldownCoroutine;
+    private Coroutine _attackDurationCoroutine;
 
     protected virtual void Start() {
       InitializeComponents();
@@ -41,6 +56,13 @@ namespace Enemies {
     protected virtual void Update() {
       if (isDying) return;
       HandleMovement();
+
+      if (canAttack && playerTransform && !isAttacking) {
+        float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+        if (distanceToPlayer <= attackRange) {
+          StartAttack();
+        }
+      }
     }
 
     protected abstract void HandleMovement();
@@ -69,7 +91,10 @@ namespace Enemies {
 
     protected virtual void FindPlayer() {
       GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-      if (playerObject) playerTransform = playerObject.transform;
+      if (playerObject) {
+        playerTransform = playerObject.transform;
+        playerStats = playerObject.GetComponent<PlayerStats>();
+      }
     }
 
     protected virtual void SetupEnemy() {
@@ -77,10 +102,48 @@ namespace Enemies {
     }
 
     protected virtual void OnDamageTaken(float damage) {
-      // display damage taken
-      // remove hp from hp bar 
+      // Override in derived classes for specific damage effects
     }
 
+    protected virtual void DealDamage() {
+      if (!playerTransform || !playerStats) return;
+      var distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
+      if (distanceToPlayer <= attackRange) {
+        playerStats.TakeDamage(attackDamage);
+      }
+    }
+
+    protected virtual void StartAttack() {
+      if (isAttacking) return;
+      isAttacking = true;
+      canAttack = false;
+      
+      if (rb) rb.linearVelocity = Vector2.zero;
+      
+      if (_attackDurationCoroutine != null) StopCoroutine(_attackDurationCoroutine);
+      _attackDurationCoroutine = StartCoroutine(AttackDurationRoutine());
+    }
+
+    private IEnumerator AttackDurationRoutine() {
+      yield return new WaitForSeconds(attackDuration);
+      DealDamage();
+      isAttacking = false;
+      StartAttackCooldown();
+    }
+    
+    protected void StartAttackCooldown() {
+      if (_attackCooldownCoroutine != null) {
+        StopCoroutine(_attackCooldownCoroutine);
+      }
+      _attackCooldownCoroutine = StartCoroutine(AttackCooldownRoutine());
+    }
+
+    private IEnumerator AttackCooldownRoutine() {
+      canAttack = false;
+      yield return new WaitForSeconds(attackCooldown);
+      canAttack = true;
+    }
+    
     protected virtual void Die() {
       if (isDying) return;
       isDying = true;
@@ -93,24 +156,17 @@ namespace Enemies {
     }
 
     protected virtual void OnDeath() {
-      
-      GameObject player = GameObject.FindGameObjectWithTag("Player");
-      if (!player) return;
-      
-      PlayerStats playerStats = player.GetComponent<PlayerStats>();
       if (!playerStats) return;
-      
+
       playerStats.AddXp(experienceGiven);
       XPUIManager xpUI = FindFirstObjectByType<XPUIManager>();
       if (xpUI) {
         xpUI.ShowFloatingXpText(transform.position, experienceGiven);
       }
-      
-      Debug.Log("Player gained XP: " + experienceGiven);
     }
 
     protected virtual void DisableEnemy() {
-      rb.linearVelocity = Vector2.zero;
+      if (rb) rb.linearVelocity = Vector2.zero;
       if (col) col.enabled = false;
     }
 
@@ -150,6 +206,8 @@ namespace Enemies {
 
     protected virtual void OnDestroy() {
       if (_flashCoroutine != null) StopCoroutine(_flashCoroutine);
+      if (_attackCooldownCoroutine != null) StopCoroutine(_attackCooldownCoroutine);
+      if (_attackDurationCoroutine != null) StopCoroutine(_attackDurationCoroutine);
     }
 
     public Transform GetTransform() => transform;

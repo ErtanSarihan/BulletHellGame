@@ -13,6 +13,8 @@ namespace Player {
     private float xpToNextLevel = 100f;
     [SerializeField]
     private float xpMultiplier = 1.5f;
+    [SerializeField]
+    private float playerHp = 100f;
 
     public UnityEvent<int> onLevelUp = new UnityEvent<int>();
     public UnityEvent<float> onExperienceChange = new UnityEvent<float>();
@@ -40,6 +42,14 @@ namespace Player {
       onExperienceChange?.Invoke(currentXp);
 
       Debug.Log("LevelUp" + currentLevel + "-----" + currentXp + "/" + xpToNextLevel);
+    }
+
+    public void TakeDamage(float damage) {
+      playerHp -= damage;
+      if (playerHp <= 0) {
+        Debug.Log("Player died");
+      }
+      // todo 
     }
   }
 }
